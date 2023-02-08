@@ -1,0 +1,29 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.api.repositories.mapper.StaffMapper">
+
+<select id="selectAllStaff" parameterType="int" resultMap="result">
+   SELECT * FROM STAFF
+</select>
+
+<select id="selectStaffById" parameterType="int" resultMap="result">
+    select * from staff where id = #{id}
+</select>
+
+<!-- test update -->
+<update id="updateStaffById" parameterType="com.demo.api.entities.StaffEntity" > 
+    update staff set name = #{staffE.name}
+    <!-- , address = #{address}, phoneNumber = #{phoneNumber}, dateOfBirth = #{dateOfBirth} -->
+    where id = #{id}
+</update>
+
+<resultMap id = "result" type = "com.demo.api.entities.StaffEntity">
+   <result property = "id" column = "id"/>
+   <result property = "name" column = "name"/>
+   <result property = "address" column = "address"/>
+   <result property = "phoneNumber" column = "phoneNumber"/>
+   <result property = "dateOfBirth" column = "dateOfBirth"/>
+</resultMap>
+
+</mapper>
