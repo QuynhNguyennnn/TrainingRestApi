@@ -35,4 +35,18 @@ public class StaffService {
         staffEntity.setDateOfBirth(staff.getDateOfBirth());
         this.staffRepository.updateStaffById(staffEntity, id);
     }
+
+    public void deleteStaff(int id){
+        this.staffRepository.deleteStaff(id);
+    }
+
+    public void insertNewStaff(StaffEntity staffE, int id){
+        StaffEntity entity = new StaffEntity();
+        entity.setId(staffE.getId());
+        entity.setName((staffE.getName()));
+        entity.setAddress(staffE.getAddress());
+        entity.setPhoneNumber(staffE.getPhoneNumber());
+        entity.setDateOfBirth(staffE.getDateOfBirth());
+        this.staffRepository.insertNewStaff(entity, id);
+    }
 }

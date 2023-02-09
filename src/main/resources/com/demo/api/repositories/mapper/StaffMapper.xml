@@ -14,9 +14,17 @@
 <!-- test update -->
 <update id="updateStaffById" parameterType="com.demo.api.entities.StaffEntity" > 
     update staff set name = #{staffE.name}
-    <!-- , address = #{address}, phoneNumber = #{phoneNumber}, dateOfBirth = #{dateOfBirth} -->
+    , address = #{staffE.address}, phoneNumber = #{staffE.phoneNumber}, dateOfBirth = #{staffE.dateOfBirth}
     where id = #{id}
 </update>
+
+<delete id="deleteStaff">
+delete from staff where id = #{id}
+</delete>
+
+<insert id="insertNewStaff" parameterType="com.demo.api.entities.StaffEntity">
+insert into staff values (#{staffE.id}, #{staffE.name}, #{staffE.address}, #{staffE.phoneNumber}, #{staffE.dateOfBirth})
+</insert>
 
 <resultMap id = "result" type = "com.demo.api.entities.StaffEntity">
    <result property = "id" column = "id"/>

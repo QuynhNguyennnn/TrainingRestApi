@@ -28,4 +28,12 @@ public class StaffRepository {
     public void updateStaffById(StaffEntity staff, int id) {
         this.staffMapper.updateStaffById(staff, id);
     }
+
+    public void deleteStaff(int id){
+        this.staffMapper.deleteStaff(id);
+    }
+
+    public void insertNewStaff(StaffEntity staffE, int id){
+        this.staffMapper.insertNewStaff(staffE, id);
+    }
 }
