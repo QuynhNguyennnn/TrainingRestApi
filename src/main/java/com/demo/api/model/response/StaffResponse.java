@@ -1,19 +1,19 @@
-package com.demo.api.entities;
+package com.demo.api.model.response;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Staff Entity.
+ * Staff Response
  * 
  * @author QuynhNN
  */
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StaffEntity {
-
+@Data
+public class StaffResponse {
     private int id;
     private String name;
     private String address;

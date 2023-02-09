@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 /**
- * StaffMapper
+ * Staff Mapper
  * 
  * @author QuynhNN
  */
@@ -18,5 +18,4 @@ public interface StaffMapper {
     List<StaffEntity> selectAllStaff();
     StaffEntity selectStaffById(@Param("id") int id);
 
-    void updateStaffById(StaffEntity staffE, int id);
 }

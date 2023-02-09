@@ -11,13 +11,6 @@
     select * from staff where id = #{id}
 </select>
 
-<!-- test update -->
-<update id="updateStaffById" parameterType="com.demo.api.entities.StaffEntity" > 
-    update staff set name = #{staffE.name}
-    <!-- , address = #{address}, phoneNumber = #{phoneNumber}, dateOfBirth = #{dateOfBirth} -->
-    where id = #{id}
-</update>
-
 <resultMap id = "result" type = "com.demo.api.entities.StaffEntity">
    <result property = "id" column = "id"/>
    <result property = "name" column = "name"/>
