@@ -3,20 +3,34 @@
 
 <mapper namespace="com.demo.api.repositories.mapper.StaffMapper">
 
-<select id="selectAllStaff" parameterType="int" resultMap="result">
+    <select id="selectAllStaff" parameterType="int" resultMap="result">
    SELECT * FROM STAFF
-</select>
+    </select>
 
-<select id="selectStaffById" parameterType="int" resultMap="result">
+    <select id="selectStaffById" parameterType="int" resultMap="result">
     select * from staff where id = #{id}
-</select>
+    </select>
 
-<resultMap id = "result" type = "com.demo.api.entities.StaffEntity">
-   <result property = "id" column = "id"/>
-   <result property = "name" column = "name"/>
-   <result property = "address" column = "address"/>
-   <result property = "phoneNumber" column = "phoneNumber"/>
-   <result property = "dateOfBirth" column = "dateOfBirth"/>
-</resultMap>
+    <update id="updateStaffById" parameterType="com.demo.api.entities.StaffEntity"> 
+    update staff set name = #{staffE.name}
+    , address = #{staffE.address}, phoneNumber = #{staffE.phoneNumber}, dateOfBirth = #{staffE.dateOfBirth}
+    where id = #{id}
+    </update>
+
+    <delete id="deleteStaff">
+    delete from staff where id = #{id}
+    </delete>
+
+    <insert id="insertNewStaff" parameterType="com.demo.api.entities.StaffEntity">
+    insert into staff values (#{staffE.id}, #{staffE.name}, #{staffE.address}, #{staffE.phoneNumber}, #{staffE.dateOfBirth})
+    </insert>
+
+    <resultMap id = "result" type = "com.demo.api.entities.StaffEntity">
+        <result property = "id" column = "id"/>
+        <result property = "name" column = "name"/>
+        <result property = "address" column = "address"/>
+        <result property = "phoneNumber" column = "phoneNumber"/>
+        <result property = "dateOfBirth" column = "dateOfBirth"/>
+    </resultMap>
 
 </mapper>

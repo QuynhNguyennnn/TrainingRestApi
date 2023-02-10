@@ -51,4 +51,33 @@ public class StaffService {
         return staffResponse;
     }
 
+    /**
+     * Update staff by id.
+     * 
+     * @param staff new information of staff
+     * @param id the staff id
+     */
+    public void updateStaffById(StaffResponse staff, int id) {
+        StaffEntity staffEntity = new StaffEntity();
+        staffEntity.setName(staff.getName());
+        staffEntity.setAddress(staff.getAddress());
+        staffEntity.setPhoneNumber(staff.getPhoneNumber());
+        staffEntity.setDateOfBirth(staff.getDateOfBirth());
+        this.staffRepository.updateStaffById(staffEntity, id);
+    }
+
+    public void deleteStaff(int id){
+        this.staffRepository.deleteStaff(id);
+    }
+
+    public void insertNewStaff(StaffResponse staffResponse, int id){
+        StaffEntity entity = new StaffEntity();
+        entity.setId(staffResponse.getId());
+        entity.setName((staffResponse.getName()));
+        entity.setAddress(staffResponse.getAddress());
+        entity.setPhoneNumber(staffResponse.getPhoneNumber());
+        entity.setDateOfBirth(staffResponse.getDateOfBirth());
+        this.staffRepository.insertNewStaff(entity, id);
+    }
+
 }
