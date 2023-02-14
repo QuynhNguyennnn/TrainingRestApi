@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.demo.api.entities.StaffEntity;
+import com.demo.api.errors.ApiError;
+import com.demo.api.exceptions.IdNotFoundException;
+import com.demo.api.exceptions.BadRequestException;
+import com.demo.api.model.request.StaffRegisterRequest;
 import com.demo.api.model.response.StaffResponse;
 import com.demo.api.model.response.StaffsResponse;
 import com.demo.api.repositories.StaffRepository;
@@ -40,7 +44,10 @@ public class StaffService {
      * @param id the id of the staff.
      * @return staff's information.
      */
-    public StaffResponse getStaffDetailsById(int id){
+    public StaffResponse getStaffDetailsById(int id) {
+        if (!staffRepository.findById(id)){
+            throw new BadRequestException(new ApiError("id_not_found", "ID not found."));
+        }
         StaffEntity staffEntity = this.staffRepository.getStaffDetailsById(id);
         StaffResponse staffResponse = new StaffResponse();
         staffResponse.setId(staffEntity.getId());
@@ -55,28 +62,56 @@ public class StaffService {
      * Update staff by id.
      * 
      * @param staff new information of staff
-     * @param id the staff id
+     * @param id    the staff id
+     * @throws NoSuchStaffExistException
      */
-    public void updateStaffById(StaffResponse staff, int id) {
-        StaffEntity staffEntity = new StaffEntity();
-        staffEntity.setName(staff.getName());
-        staffEntity.setAddress(staff.getAddress());
-        staffEntity.setPhoneNumber(staff.getPhoneNumber());
-        staffEntity.setDateOfBirth(staff.getDateOfBirth());
-        this.staffRepository.updateStaffById(staffEntity, id);
+    public void updateStaffById(StaffRegisterRequest staffRegisterRequest){
+        if (!staffRepository.findById(staffRegisterRequest.getId())){
+            throw new BadRequestException(new ApiError("id_not_found", "ID not found."));
+        }
+
+        int id = staffRegisterRequest.getId();
+        if (!staffRepository.findById(id)) {
+            throw new IdNotFoundException();
+        } else {
+            StaffEntity staffEntity = new StaffEntity();
+            staffEntity.setId(staffRegisterRequest.getId());
+            staffEntity.setName(staffRegisterRequest.getName());
+            staffEntity.setAddress(staffRegisterRequest.getAddress());
+            staffEntity.setPhoneNumber(staffRegisterRequest.getPhoneNumber());
+            staffEntity.setDateOfBirth(staffRegisterRequest.getDateOfBirth());
+            this.staffRepository.updateStaffById(staffEntity, staffEntity.getId());
+        }
     }
 
-    public void deleteStaff(int id){
+    /**
+     * delete staff by id.
+     * 
+     * @param id id of the staff
+     */
+    public void deleteStaff(int id) {
+        if (!staffRepository.findById(id)){
+            throw new BadRequestException(new ApiError("id_not_found", "ID not found."));
+        }
         this.staffRepository.deleteStaff(id);
     }
 
-    public void insertNewStaff(StaffResponse staffResponse, int id){
+    /**
+     * create/ insert new staff.
+     * 
+     * @param staffResponse staff information
+     * @param id            id of staff
+     */
+    public void insertNewStaff(StaffRegisterRequest staffRegisterRequest, int id) {
+        if (staffRepository.findById(id)){
+            throw new BadRequestException(new ApiError("id_already_exists", "ID already exists."));
+        }
         StaffEntity entity = new StaffEntity();
-        entity.setId(staffResponse.getId());
-        entity.setName((staffResponse.getName()));
-        entity.setAddress(staffResponse.getAddress());
-        entity.setPhoneNumber(staffResponse.getPhoneNumber());
-        entity.setDateOfBirth(staffResponse.getDateOfBirth());
+        entity.setId(staffRegisterRequest.getId());
+        entity.setName((staffRegisterRequest.getName()));
+        entity.setAddress(staffRegisterRequest.getAddress());
+        entity.setPhoneNumber(staffRegisterRequest.getPhoneNumber());
+        entity.setDateOfBirth(staffRegisterRequest.getDateOfBirth());
         this.staffRepository.insertNewStaff(entity, id);
     }
 

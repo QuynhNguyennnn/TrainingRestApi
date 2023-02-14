@@ -17,7 +17,8 @@ public interface StaffMapper {
 
     List<StaffEntity> selectAllStaff();
     StaffEntity selectStaffById(@Param("id") int id);
-    void updateStaffById(StaffEntity staffE, int id);
+    void updateStaffById(StaffEntity staffEntity, int id);
     void deleteStaff(@Param("id") int id);
-    void  insertNewStaff(StaffEntity staffE, int id);
+    void insertNewStaff(StaffEntity staffEntity, int id);
+    
 }

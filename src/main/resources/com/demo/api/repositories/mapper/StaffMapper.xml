@@ -12,9 +12,9 @@
     </select>
 
     <update id="updateStaffById" parameterType="com.demo.api.entities.StaffEntity"> 
-    update staff set name = #{staffE.name}
-    , address = #{staffE.address}, phoneNumber = #{staffE.phoneNumber}, dateOfBirth = #{staffE.dateOfBirth}
-    where id = #{id}
+    update staff set name = #{staffEntity.name}
+    , address = #{staffEntity.address}, phoneNumber = #{staffEntity.phoneNumber}, dateOfBirth = #{staffEntity.dateOfBirth}
+    where id = #{staffEntity.id}
     </update>
 
     <delete id="deleteStaff">
@@ -22,7 +22,7 @@
     </delete>
 
     <insert id="insertNewStaff" parameterType="com.demo.api.entities.StaffEntity">
-    insert into staff values (#{staffE.id}, #{staffE.name}, #{staffE.address}, #{staffE.phoneNumber}, #{staffE.dateOfBirth})
+    insert into staff values (#{staffEntity.id}, #{staffEntity.name}, #{staffEntity.address}, #{staffEntity.phoneNumber}, #{staffEntity.dateOfBirth})
     </insert>
 
     <resultMap id = "result" type = "com.demo.api.entities.StaffEntity">

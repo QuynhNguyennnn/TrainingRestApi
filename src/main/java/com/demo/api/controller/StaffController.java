@@ -2,6 +2,7 @@ package com.demo.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,9 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.api.model.response.StaffsResponse;
+import com.demo.api.model.request.StaffRegisterRequest;
 import com.demo.api.model.response.StaffResponse;
 
 import com.demo.api.service.StaffService;
+
+import javax.validation.Valid;
 
 /**
  * Staff Controller.
@@ -23,6 +27,7 @@ import com.demo.api.service.StaffService;
  * @author QuynhNN
  */
 @RestController
+@Validated
 @RequestMapping("/staff")
 public class StaffController {
 
@@ -36,8 +41,7 @@ public class StaffController {
      * @return staff details
      */
     @GetMapping(value = "/getStaffDetailsById/{id}")
-    public ResponseEntity<StaffResponse> getStaffDetailsById(@PathVariable int id) {
-        
+    public ResponseEntity<StaffResponse> getStaffDetailsById(@Valid @PathVariable int id) {
         return ResponseEntity.ok(staffService.getStaffDetailsById(id));
     }
 
@@ -55,13 +59,11 @@ public class StaffController {
     /**
      * Update the staff.
      * 
-     * @param id the staff id needs to upate.
      * @param staffResponse data wants to update. 
      */
     @PutMapping(value = "/update/{id}")
-    public void updateStaffById(@PathVariable(value = "id") int id, @RequestBody StaffResponse staffResponse) {
-        staffService.updateStaffById(staffResponse, id);
-
+    public void updateStaffById(@Valid @RequestBody StaffRegisterRequest staffRegisterRequest) {
+        staffService.updateStaffById(staffRegisterRequest);
     }
 
     /**
@@ -83,8 +85,8 @@ public class StaffController {
      */
     @PostMapping(value = "/insert/{id}")
     @ResponseBody
-    public void insertNewStaff(@RequestBody StaffResponse staffResponse, @PathVariable(value = "id") int id){         
-        staffService.insertNewStaff(staffResponse, id);
+    public void insertNewStaff(@Valid @RequestBody StaffRegisterRequest staffRegisterRequest, @PathVariable(value = "id") int id){         
+        staffService.insertNewStaff(staffRegisterRequest, id);
     }
 
 }
