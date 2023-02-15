@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Staff Response
+ * Staff Response.
  * 
  * @author QuynhNN
  */

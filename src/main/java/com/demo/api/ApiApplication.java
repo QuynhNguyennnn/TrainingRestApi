@@ -6,7 +6,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan("com.demo.api.*")
-
 /**
  * Api Application.
  * 

@@ -20,16 +20,16 @@ public class StaffRegisterRequest {
     @Digits(fraction = 0, integer = 1)
     private int id;
 
-    @NotBlank (message = "name is mandatory")
+    @NotBlank (message = "name is required")
     @Length(min = 2, max = 50)
     private String name;
 
-    @NotBlank (message = "address is mandatory")
+    @NotBlank (message = "address is required")
     private String address;
 
-    @NotBlank (message = "phone number is mandatory")
+    @NotBlank (message = "phone number is required")
     private String phoneNumber;
 
-    @NotBlank (message = "date of birth is mandatory")
+    @NotBlank (message = "date of birth is required")
     private String dateOfBirth;
 }

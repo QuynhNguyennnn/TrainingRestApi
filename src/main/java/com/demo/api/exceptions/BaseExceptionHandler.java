@@ -1,4 +1,5 @@
 package com.demo.api.exceptions;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,38 +19,38 @@ import com.demo.api.errors.ApiError;
  * @author QuynhNN
  */
 @ControllerAdvice
-public class StaffControllerAdvice {
+public class BaseExceptionHandler {
 
   /**
-   * validate user input.
+   * Validate user input.
    * 
    * @param ex name of exception
    * @return error response
    */
   @ExceptionHandler(MethodArgumentNotValidException.class)
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-      Map<String, Object> body = new HashMap<>();
+    Map<String, Object> body = new HashMap<>();
 
-      List<String> errors = ex.getBindingResult()
+    List<String> errors = ex.getBindingResult()
         .getFieldErrors()
         .stream()
         .map(DefaultMessageSourceResolvable::getDefaultMessage)
         .collect(Collectors.toList());
 
-        body.put("errors", errors);
+    body.put("errors", errors);
 
-      return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
+    return new ResponseEntity<>(body, HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   /**
-   * catch run time exception. 
+   * Catch user input exception.
    * 
    * @param e name of exception
    * @return error response
    */
-  @ExceptionHandler(APIException.class)
-  public ResponseEntity<ApiError> handleApiException(APIException e) {
-    return new ResponseEntity<>(new ApiError(e.getApiError().getCode(), e.getApiError().getMessage()), e.getStatusCode());
-    
+  @ExceptionHandler(ApiException.class)
+  public ResponseEntity<ApiError> handleApiException(ApiException e) {
+    return new ResponseEntity<>(new ApiError(e.getApiError().getCode(), e.getApiError().getMessage()),
+        e.getStatusCode());
   }
 }

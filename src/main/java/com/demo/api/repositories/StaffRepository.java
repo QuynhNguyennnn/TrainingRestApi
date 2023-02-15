@@ -28,20 +28,20 @@ public class StaffRepository {
     }
 
     /**
-     * get staff details by id
+     * Get staff details by id
      * 
      * @param id the id of the staff needs to get information
      * @return the staff information
      */
-    public StaffEntity getStaffDetailsById(int id){
+    public StaffEntity getStaffDetailsById(int id) {
         return this.staffMapper.selectStaffById(id);
     }
-    
+
     /**
-     *  update staff by id.
+     * Update staff by id.
      * 
-     * @param staff new data want to update 
-     * @param id id of staff want to update
+     * @param staff new data want to update
+     * @param id    id of staff want to update
      */
     public void updateStaffById(StaffEntity staff, int id) {
         this.staffMapper.updateStaffById(staff, id);
@@ -52,25 +52,27 @@ public class StaffRepository {
      * 
      * @param id id of the staff want to delete
      */
-    public void deleteStaff(int id){
+    public void deleteStaff(int id) {
         this.staffMapper.deleteStaff(id);
     }
 
     /**
-     * create new staff.
+     * Create new staff.
      * 
      * @param staffEntity data of new staff
-     * @param id id of staff
+     * @param id          id of staff
      */
-    public void insertNewStaff(StaffEntity staffEntity, int id){
-        this.staffMapper.insertNewStaff(staffEntity, id);
+    public void insertNewStaff(StaffEntity staffEntity) {
+        this.staffMapper.insertNewStaff(staffEntity);
     }
 
-    public Boolean findById(int id){
-        if (this.staffMapper.selectStaffById(id) != null) {
-            return true;
-        } else {
-            return false;
-        }
+    /**
+     * Check id exists or not.
+     * 
+     * @param id the id needs to check
+     * @return true or false (exist or not)
+     */
+    public Boolean isIdExist(int id) {
+        return this.staffMapper.selectStaffById(id) != null;
     }
 }

@@ -10,8 +10,13 @@ import com.demo.api.errors.ApiError;
  * @author QuynhNN
  */
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-public class BadRequestException extends APIException {
+public class BadRequestException extends ApiException {
 
+    /**
+     * Constructor.
+     * 
+     * @param apiError apiError to save code and message
+     */
     public BadRequestException(ApiError apiError){
         super(apiError, HttpStatus.BAD_REQUEST);
     }

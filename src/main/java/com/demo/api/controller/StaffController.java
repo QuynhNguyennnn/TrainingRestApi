@@ -12,14 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
 
 import com.demo.api.model.response.StaffsResponse;
 import com.demo.api.model.request.StaffRegisterRequest;
 import com.demo.api.model.response.StaffResponse;
-
 import com.demo.api.service.StaffService;
-
-import javax.validation.Valid;
 
 /**
  * Staff Controller.
@@ -52,16 +50,15 @@ public class StaffController {
      */
     @GetMapping(value = "/getAll")
     public ResponseEntity<StaffsResponse> getAllStaffs() {
-         return ResponseEntity.ok(staffService.getAllStaff());
+        return ResponseEntity.ok(staffService.getAllStaff());
     }
 
-    
     /**
      * Update the staff.
      * 
-     * @param staffResponse data wants to update. 
+     * @param staffResponse data wants to update.
      */
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "/update")
     public void updateStaffById(@Valid @RequestBody StaffRegisterRequest staffRegisterRequest) {
         staffService.updateStaffById(staffRegisterRequest);
     }
@@ -73,7 +70,7 @@ public class StaffController {
      */
     @DeleteMapping(value = "/delete/{id}")
     @ResponseBody
-    public void deleteStaff(@PathVariable int id){
+    public void deleteStaff(@PathVariable int id) {
         staffService.deleteStaff(id);
     }
 
@@ -81,12 +78,12 @@ public class StaffController {
      * insert new staff.
      * 
      * @param staffResponse save data returned from user.
-     * @param id new staff id.
+     * @param id            new staff id.
      */
-    @PostMapping(value = "/insert/{id}")
+    @PostMapping(value = "/insert")
     @ResponseBody
-    public void insertNewStaff(@Valid @RequestBody StaffRegisterRequest staffRegisterRequest, @PathVariable(value = "id") int id){         
-        staffService.insertNewStaff(staffRegisterRequest, id);
+    public void insertNewStaff(@Valid @RequestBody StaffRegisterRequest staffRegisterRequest) {
+        staffService.insertNewStaff(staffRegisterRequest);
     }
 
 }

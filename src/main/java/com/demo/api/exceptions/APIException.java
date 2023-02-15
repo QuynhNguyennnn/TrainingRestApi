@@ -12,21 +12,33 @@ import com.demo.api.errors.ApiError;
  * @author QuynhNN
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
-public class APIException extends RuntimeException {
+@EqualsAndHashCode(callSuper = false)
+public class ApiException extends RuntimeException {
     private String code;
     private String message;
-
     private HttpStatus statusCode;
     private ApiError apiError;
-    
-    public APIException(String code, String message, HttpStatus statusCode) {
+
+    /**
+     * Construtor.
+     * 
+     * @param code       code of error
+     * @param message    message for error
+     * @param statusCode error status code
+     */
+    public ApiException(String code, String message, HttpStatus statusCode) {
         this.code = code;
         this.message = message;
         this.statusCode = statusCode;
     }
 
-    public APIException(ApiError apiError, HttpStatus statusCode) {
+    /**
+     * Another constructor.
+     * 
+     * @param apiError   apiError to save code and message
+     * @param statusCode error status code
+     */
+    public ApiException(ApiError apiError, HttpStatus statusCode) {
         this.apiError = apiError;
         this.statusCode = statusCode;
     }

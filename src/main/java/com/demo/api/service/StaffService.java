@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.demo.api.entities.StaffEntity;
 import com.demo.api.errors.ApiError;
-import com.demo.api.exceptions.IdNotFoundException;
 import com.demo.api.exceptions.BadRequestException;
 import com.demo.api.model.request.StaffRegisterRequest;
 import com.demo.api.model.response.StaffResponse;
@@ -26,7 +25,7 @@ public class StaffService {
     private StaffRepository staffRepository;
 
     /**
-     * get all staff list.
+     * Get all staff list.
      * 
      * @return staffs response list.
      */
@@ -39,13 +38,13 @@ public class StaffService {
     }
 
     /**
-     * get staff details by id.
+     * Get staff details by id.
      * 
      * @param id the id of the staff.
      * @return staff's information.
      */
     public StaffResponse getStaffDetailsById(int id) {
-        if (!staffRepository.findById(id)){
+        if (!staffRepository.isIdExist(id)) {
             throw new BadRequestException(new ApiError("id_not_found", "ID not found."));
         }
         StaffEntity staffEntity = this.staffRepository.getStaffDetailsById(id);
@@ -65,45 +64,39 @@ public class StaffService {
      * @param id    the staff id
      * @throws NoSuchStaffExistException
      */
-    public void updateStaffById(StaffRegisterRequest staffRegisterRequest){
-        if (!staffRepository.findById(staffRegisterRequest.getId())){
+    public void updateStaffById(StaffRegisterRequest staffRegisterRequest) {
+        if (!staffRepository.isIdExist(staffRegisterRequest.getId())) {
             throw new BadRequestException(new ApiError("id_not_found", "ID not found."));
         }
-
-        int id = staffRegisterRequest.getId();
-        if (!staffRepository.findById(id)) {
-            throw new IdNotFoundException();
-        } else {
-            StaffEntity staffEntity = new StaffEntity();
-            staffEntity.setId(staffRegisterRequest.getId());
-            staffEntity.setName(staffRegisterRequest.getName());
-            staffEntity.setAddress(staffRegisterRequest.getAddress());
-            staffEntity.setPhoneNumber(staffRegisterRequest.getPhoneNumber());
-            staffEntity.setDateOfBirth(staffRegisterRequest.getDateOfBirth());
-            this.staffRepository.updateStaffById(staffEntity, staffEntity.getId());
-        }
+        StaffEntity staffEntity = new StaffEntity();
+        staffEntity.setId(staffRegisterRequest.getId());
+        staffEntity.setName(staffRegisterRequest.getName());
+        staffEntity.setAddress(staffRegisterRequest.getAddress());
+        staffEntity.setPhoneNumber(staffRegisterRequest.getPhoneNumber());
+        staffEntity.setDateOfBirth(staffRegisterRequest.getDateOfBirth());
+        this.staffRepository.updateStaffById(staffEntity, staffEntity.getId());
     }
 
     /**
-     * delete staff by id.
+     * Delete staff by id.
      * 
      * @param id id of the staff
      */
     public void deleteStaff(int id) {
-        if (!staffRepository.findById(id)){
+        if (!staffRepository.isIdExist(id)) {
             throw new BadRequestException(new ApiError("id_not_found", "ID not found."));
         }
         this.staffRepository.deleteStaff(id);
     }
 
     /**
-     * create/ insert new staff.
+     * Create/ insert new staff.
      * 
      * @param staffResponse staff information
      * @param id            id of staff
      */
-    public void insertNewStaff(StaffRegisterRequest staffRegisterRequest, int id) {
-        if (staffRepository.findById(id)){
+    public void insertNewStaff(StaffRegisterRequest staffRegisterRequest) {
+        if (staffRepository.isIdExist(staffRegisterRequest.getId())) {
             throw new BadRequestException(new ApiError("id_already_exists", "ID already exists."));
         }
         StaffEntity entity = new StaffEntity();
@@ -112,7 +105,7 @@ public class StaffService {
         entity.setAddress(staffRegisterRequest.getAddress());
         entity.setPhoneNumber(staffRegisterRequest.getPhoneNumber());
         entity.setDateOfBirth(staffRegisterRequest.getDateOfBirth());
-        this.staffRepository.insertNewStaff(entity, id);
+        this.staffRepository.insertNewStaff(entity);
     }
 
 }

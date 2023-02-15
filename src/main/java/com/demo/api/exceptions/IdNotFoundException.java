@@ -9,14 +9,24 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author QuynhNN
  */
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
-public class IdNotFoundException extends APIException {
+public class IdNotFoundException extends ApiException {
 
-    public IdNotFoundException() {
-        super("id_not_found", "Couldn't find id!", HttpStatus.NOT_FOUND);
-    }
-
+    /**
+     * Constructor. 
+     * 
+     * @param code code of error
+     * @param mess message of error
+     */
     public IdNotFoundException(String code, String mess){
         super(code, mess, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Another constructor no parameters.
+     * 
+     */
+    public IdNotFoundException() {
+        super("id_not_found", "Couldn't find id!", HttpStatus.NOT_FOUND);
     }
 
 }

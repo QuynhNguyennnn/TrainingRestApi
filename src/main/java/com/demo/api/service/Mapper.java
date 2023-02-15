@@ -15,8 +15,8 @@ import com.demo.api.model.response.StaffResponse;
 public class Mapper {
     private List<StaffEntity> entity = new ArrayList<>();
 
-    Mapper(List<StaffEntity> eList) {
-        this.entity = eList;
+    Mapper(List<StaffEntity> staffEntities) {
+        this.entity = staffEntities;
     }
 
     /**
