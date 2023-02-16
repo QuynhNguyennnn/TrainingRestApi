@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class StaffRegisterRequest {
+public class StaffRequest {
     
     @Digits(fraction = 0, integer = 1)
     private int id;

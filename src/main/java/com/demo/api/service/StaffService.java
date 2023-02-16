@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import com.demo.api.entities.StaffEntity;
 import com.demo.api.errors.ApiError;
 import com.demo.api.exceptions.BadRequestException;
-import com.demo.api.model.request.StaffRegisterRequest;
+import com.demo.api.model.request.PageRequest;
+import com.demo.api.model.request.StaffRequest;
+import com.demo.api.model.request.StaffSearchRequest;
 import com.demo.api.model.response.StaffResponse;
 import com.demo.api.model.response.StaffsResponse;
 import com.demo.api.repositories.StaffRepository;
@@ -25,12 +27,24 @@ public class StaffService {
     private StaffRepository staffRepository;
 
     /**
-     * Get all staff list.
+     * Get staff list by page number.
      * 
-     * @return staffs response list.
+     * @param pageRequest page number and number of item on page
+     * @return list of staff in that page
      */
-    public StaffsResponse getAllStaff() {
-        List<StaffEntity> staffList = this.staffRepository.getAll();
+    public StaffsResponse getAllStaff(PageRequest pageRequest) {
+        int page = pageRequest.getPage();
+        int item = pageRequest.getItemByPage();
+        int offset = 0;
+        List<StaffEntity> staffList;
+        if (page == 1) {
+            offset = 0;
+            item = 10;
+            staffList = this.staffRepository.getAll(item, offset);
+        } else {
+            offset = (page - 1) * item;
+            staffList = this.staffRepository.getAll(item, offset);
+        }
         Mapper mapper = new Mapper(staffList);
         StaffsResponse response = new StaffsResponse();
         response.setStaffs(mapper.map());
@@ -64,7 +78,7 @@ public class StaffService {
      * @param id    the staff id
      * @throws NoSuchStaffExistException
      */
-    public void updateStaffById(StaffRegisterRequest staffRegisterRequest) {
+    public void updateStaffById(StaffRequest staffRegisterRequest) {
         if (!staffRepository.isIdExist(staffRegisterRequest.getId())) {
             throw new BadRequestException(new ApiError("id_not_found", "ID not found."));
         }
@@ -92,10 +106,9 @@ public class StaffService {
     /**
      * Create/ insert new staff.
      * 
-     * @param staffResponse staff information
-     * @param id            id of staff
+     * @param staffRegisterRequest information of staff
      */
-    public void insertNewStaff(StaffRegisterRequest staffRegisterRequest) {
+    public void insertNewStaff(StaffRequest staffRegisterRequest) {
         if (staffRepository.isIdExist(staffRegisterRequest.getId())) {
             throw new BadRequestException(new ApiError("id_already_exists", "ID already exists."));
         }
@@ -106,6 +119,23 @@ public class StaffService {
         entity.setPhoneNumber(staffRegisterRequest.getPhoneNumber());
         entity.setDateOfBirth(staffRegisterRequest.getDateOfBirth());
         this.staffRepository.insertNewStaff(entity);
+    }
+
+    /**
+     * Search staff by id and name.
+     * 
+     * @param searchRequest id and name of staff
+     * @return the staffs list coincide with input
+     */
+    public StaffsResponse searchStaff(StaffSearchRequest searchRequest) {
+        StaffEntity staffEntity = new StaffEntity();
+        staffEntity.setId(searchRequest.getId());
+        staffEntity.setName(searchRequest.getName());
+        List<StaffEntity> staffList = this.staffRepository.searchStaff(staffEntity);
+        Mapper mapper = new Mapper(staffList);
+        StaffsResponse response = new StaffsResponse();
+        response.setStaffs(mapper.map());
+        return response;
     }
 
 }

@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import javax.validation.Valid;
 
 import com.demo.api.model.response.StaffsResponse;
-import com.demo.api.model.request.StaffRegisterRequest;
+import com.demo.api.model.request.PageRequest;
+import com.demo.api.model.request.StaffRequest;
+import com.demo.api.model.request.StaffSearchRequest;
 import com.demo.api.model.response.StaffResponse;
 import com.demo.api.service.StaffService;
 
@@ -49,8 +52,8 @@ public class StaffController {
      * @return all staff values
      */
     @GetMapping(value = "/getAll")
-    public ResponseEntity<StaffsResponse> getAllStaffs() {
-        return ResponseEntity.ok(staffService.getAllStaff());
+    public ResponseEntity<StaffsResponse> getAllStaffs(@RequestBody PageRequest pageRequest) {
+        return ResponseEntity.ok(staffService.getAllStaff(pageRequest));
     }
 
     /**
@@ -59,8 +62,8 @@ public class StaffController {
      * @param staffResponse data wants to update.
      */
     @PutMapping(value = "/update")
-    public void updateStaffById(@Valid @RequestBody StaffRegisterRequest staffRegisterRequest) {
-        staffService.updateStaffById(staffRegisterRequest);
+    public void updateStaffById(@Valid @RequestBody StaffRequest staffRequest) {
+        staffService.updateStaffById(staffRequest);
     }
 
     /**
@@ -82,8 +85,18 @@ public class StaffController {
      */
     @PostMapping(value = "/insert")
     @ResponseBody
-    public void insertNewStaff(@Valid @RequestBody StaffRegisterRequest staffRegisterRequest) {
-        staffService.insertNewStaff(staffRegisterRequest);
+    public void insertNewStaff(@Valid @RequestBody StaffRequest staffRequest) {
+        staffService.insertNewStaff(staffRequest);
     }
 
+    /**
+     * Search staff by id and name.
+     * 
+     * @param staffSearchRequest id and name of staff
+     * @return the staffs list coincide with input
+     */
+    @GetMapping(value = "/search")
+    public ResponseEntity<StaffsResponse> searchStaff(@RequestBody StaffSearchRequest staffSearchRequest) {
+        return ResponseEntity.ok(staffService.searchStaff(staffSearchRequest));
+    }
 }

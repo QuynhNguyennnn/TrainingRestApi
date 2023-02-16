@@ -4,7 +4,7 @@
 <mapper namespace="com.demo.api.repositories.mapper.StaffMapper">
 
     <select id="selectAllStaff" parameterType="int" resultMap="result">
-   SELECT * FROM STAFF
+   SELECT * FROM STAFF limit #{page} offset #{itemByPage}
     </select>
 
     <select id="selectStaffById" parameterType="int" resultMap="result">
@@ -24,6 +24,14 @@
     <insert id="insertNewStaff" parameterType="com.demo.api.entities.StaffEntity">
     insert into staff values (#{staffEntity.id}, #{staffEntity.name}, #{staffEntity.address}, #{staffEntity.phoneNumber}, #{staffEntity.dateOfBirth})
     </insert>
+
+    <select id="getListStaff" parameterType="int" resultMap="result">
+    select * from staff order by id asc
+    </select>
+
+    <select id="searchStaff" parameterType="com.demo.api.entities.StaffEntity" resultMap="result">
+    select * from staff where name like '%${staffEntity.name}%' or id like '%${staffEntity.id}%'
+    </select>
 
     <resultMap id = "result" type = "com.demo.api.entities.StaffEntity">
         <result property = "id" column = "id"/>
