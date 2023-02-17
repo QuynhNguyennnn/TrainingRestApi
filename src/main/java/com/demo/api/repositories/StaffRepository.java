@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import com.demo.api.entities.StaffEntity;
 import com.demo.api.repositories.mapper.StaffMapper;
-
 
 /**
  * Staff Repository.
@@ -24,7 +24,7 @@ public class StaffRepository {
      * 
      * @return all staff list
      */
-    public List<StaffEntity> getAll(int itemByPage, int offset) {
+    public List<StaffEntity> getAllStaff(int itemByPage, int offset) {
         return this.staffMapper.selectAllStaff(itemByPage, offset);
     }
 
@@ -75,16 +75,16 @@ public class StaffRepository {
      */
     public Boolean isIdExist(int id) {
         return this.staffMapper.selectStaffById(id) != null;
-    }    
+    }
 
     /**
      * Search staff by name and id.
      * 
      * @param name name of staff, could be any characters in name
-     * @param id id of staff
+     * @param id   id of staff
      * @return the staffs list coincide with input
      */
-    public List<StaffEntity> searchStaff(StaffEntity entity){
+    public List<StaffEntity> searchStaff(StaffEntity entity) {
         return this.staffMapper.searchStaff(entity);
     }
 }

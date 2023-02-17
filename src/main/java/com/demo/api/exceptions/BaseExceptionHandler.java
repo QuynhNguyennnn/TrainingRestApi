@@ -43,7 +43,7 @@ public class BaseExceptionHandler {
   }
 
   /**
-   * Catch user input exception.
+   * Handler api exception.
    * 
    * @param e name of exception
    * @return error response

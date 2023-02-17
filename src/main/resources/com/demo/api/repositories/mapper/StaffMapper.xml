@@ -4,7 +4,7 @@
 <mapper namespace="com.demo.api.repositories.mapper.StaffMapper">
 
     <select id="selectAllStaff" parameterType="int" resultMap="result">
-   SELECT * FROM STAFF limit #{page} offset #{itemByPage}
+        SELECT * FROM STAFF limit #{page} offset #{itemByPage}
     </select>
 
     <select id="selectStaffById" parameterType="int" resultMap="result">

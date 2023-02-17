@@ -15,4 +15,5 @@ import lombok.NoArgsConstructor;
 public class PageRequest {
     private int page;
     private int itemByPage;
+
 }

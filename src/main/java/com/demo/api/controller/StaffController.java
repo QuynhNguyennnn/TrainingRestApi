@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,8 +53,9 @@ public class StaffController {
      * @return all staff values
      */
     @GetMapping(value = "/getAll")
-    public ResponseEntity<StaffsResponse> getAllStaffs(@RequestBody PageRequest pageRequest) {
-        return ResponseEntity.ok(staffService.getAllStaff(pageRequest));
+    public ResponseEntity<StaffsResponse> getAllStaffs(@RequestBody PageRequest pageRequest,
+            @RequestParam(required = false, name = "id") String id, @RequestParam(required = false, name = "name") String name) {
+        return ResponseEntity.ok(staffService.getAllStaff(pageRequest, id, name));
     }
 
     /**

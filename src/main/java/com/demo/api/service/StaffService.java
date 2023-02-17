@@ -32,20 +32,27 @@ public class StaffService {
      * @param pageRequest page number and number of item on page
      * @return list of staff in that page
      */
-    public StaffsResponse getAllStaff(PageRequest pageRequest) {
+    public StaffsResponse getAllStaff(PageRequest pageRequest, String id, String name) {
         int page = pageRequest.getPage();
         int item = pageRequest.getItemByPage();
         int offset = 0;
-        List<StaffEntity> staffList;
-        if (page == 1) {
-            offset = 0;
-            item = 10;
-            staffList = this.staffRepository.getAll(item, offset);
+        List<StaffEntity> staffs;
+        if (id != null || name != null) {
+            StaffEntity staffEntity = new StaffEntity();
+            staffEntity.setId(Integer.parseInt(id));
+            staffEntity.setName(name);
+            staffs = this.staffRepository.searchStaff(staffEntity);
         } else {
-            offset = (page - 1) * item;
-            staffList = this.staffRepository.getAll(item, offset);
+            if (page == 1) {
+                offset = 0;
+                item = 10;
+                staffs = this.staffRepository.getAllStaff(item, offset);
+            } else {
+                offset = (page - 1) * item;
+                staffs = this.staffRepository.getAllStaff(item, offset);
+            }
         }
-        Mapper mapper = new Mapper(staffList);
+        Mapper mapper = new Mapper(staffs);
         StaffsResponse response = new StaffsResponse();
         response.setStaffs(mapper.map());
         return response;
@@ -59,7 +66,7 @@ public class StaffService {
      */
     public StaffResponse getStaffDetailsById(int id) {
         if (!staffRepository.isIdExist(id)) {
-            throw new BadRequestException(new ApiError("id_not_found", "ID not found."));
+            throw new BadRequestException(new ApiError("id_not_found", "id_not_found"));
         }
         StaffEntity staffEntity = this.staffRepository.getStaffDetailsById(id);
         StaffResponse staffResponse = new StaffResponse();
