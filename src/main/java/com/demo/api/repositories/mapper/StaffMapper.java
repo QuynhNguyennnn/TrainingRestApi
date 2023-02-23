@@ -1,6 +1,7 @@
 package com.demo.api.repositories.mapper;
 
 import com.demo.api.entities.StaffEntity;
+import com.demo.api.model.StaffSearch;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface StaffMapper {
 
-    List<StaffEntity> selectAllStaff(@Param("page") int page, @Param("itemByPage") int itemBypage);
+    List<StaffEntity> selectAllStaff(@Param("staffSearch") StaffSearch staffSearch);
 
     StaffEntity selectStaffById(@Param("id") int id);
 
@@ -23,7 +24,7 @@ public interface StaffMapper {
 
     void deleteStaff(@Param("id") int id);
 
-    void insertNewStaff(StaffEntity staffEntity);
+    void insertNewStaff(@Param("staffEntity") StaffEntity staffEntity);
 
-    List<StaffEntity> searchStaff(@Param("staffEntity") StaffEntity staffEntity);
+    int searchStaff(@Param("staffEntity") StaffEntity staffEntity);
 }

@@ -11,5 +11,7 @@ import lombok.Data;
  */
 @Data
 public class StaffsResponse {
+    
+    private int itemCount;
     private List<StaffResponse> staffs;
 }

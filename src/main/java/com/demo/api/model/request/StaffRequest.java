@@ -2,8 +2,8 @@ package com.demo.api.model.request;
 
 import org.hibernate.validator.constraints.Length;
 
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotBlank;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,19 +17,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StaffRequest {
     
-    @Digits(fraction = 0, integer = 1)
+    @Digits(fraction = 0, integer = 2)
     private int id;
 
-    @NotBlank (message = "name is required")
+    @NotNull(message = "name is required")
     @Length(min = 2, max = 50)
     private String name;
 
-    @NotBlank (message = "address is required")
+    @NotNull (message = "address is required")
     private String address;
 
-    @NotBlank (message = "phone number is required")
+    @NotNull (message = "phone number is required")
     private String phoneNumber;
 
-    @NotBlank (message = "date of birth is required")
+    @NotNull (message = "date of birth is required")
     private String dateOfBirth;
 }

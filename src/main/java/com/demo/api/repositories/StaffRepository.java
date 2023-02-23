@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.demo.api.entities.StaffEntity;
+import com.demo.api.model.StaffSearch;
 import com.demo.api.repositories.mapper.StaffMapper;
 
 /**
@@ -24,8 +25,8 @@ public class StaffRepository {
      * 
      * @return all staff list
      */
-    public List<StaffEntity> getAllStaff(int itemByPage, int offset) {
-        return this.staffMapper.selectAllStaff(itemByPage, offset);
+    public List<StaffEntity> getAllStaff(StaffSearch staffSearch) {
+        return this.staffMapper.selectAllStaff(staffSearch);
     }
 
     /**
@@ -84,7 +85,7 @@ public class StaffRepository {
      * @param id   id of staff
      * @return the staffs list coincide with input
      */
-    public List<StaffEntity> searchStaff(StaffEntity entity) {
+    public int searchStaff(StaffEntity entity) {
         return this.staffMapper.searchStaff(entity);
     }
 }

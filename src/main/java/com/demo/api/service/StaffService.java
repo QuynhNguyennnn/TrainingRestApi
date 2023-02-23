@@ -3,14 +3,19 @@ package com.demo.api.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import java.util.Locale;
 
+import static com.demo.api.constants.ErrorCode.ID_NOT_EXISTS;
+import static com.demo.api.constants.ErrorCode.ID_EXISTS;
+import static com.demo.api.constants.ErrorMessage.ID_NOT_FOUND;
+import static com.demo.api.constants.ErrorMessage.ID_ALREADY_EXIST;
 import com.demo.api.entities.StaffEntity;
 import com.demo.api.errors.ApiError;
 import com.demo.api.exceptions.BadRequestException;
-import com.demo.api.model.request.PageRequest;
+import com.demo.api.model.StaffSearch;
 import com.demo.api.model.request.StaffRequest;
-import com.demo.api.model.request.StaffSearchRequest;
 import com.demo.api.model.response.StaffResponse;
 import com.demo.api.model.response.StaffsResponse;
 import com.demo.api.repositories.StaffRepository;
@@ -26,34 +31,24 @@ public class StaffService {
     @Autowired
     private StaffRepository staffRepository;
 
+    @Autowired
+    private MessageSource messageSource;
+
     /**
      * Get staff list by page number.
      * 
-     * @param pageRequest page number and number of item on page
+     * @param staffSearch page number, number of item on page, id and name of staff
      * @return list of staff in that page
      */
-    public StaffsResponse getAllStaff(PageRequest pageRequest, String id, String name) {
-        int page = pageRequest.getPage();
-        int item = pageRequest.getItemByPage();
-        int offset = 0;
-        List<StaffEntity> staffs;
-        if (id != null || name != null) {
-            StaffEntity staffEntity = new StaffEntity();
-            staffEntity.setId(Integer.parseInt(id));
-            staffEntity.setName(name);
-            staffs = this.staffRepository.searchStaff(staffEntity);
-        } else {
-            if (page == 1) {
-                offset = 0;
-                item = 10;
-                staffs = this.staffRepository.getAllStaff(item, offset);
-            } else {
-                offset = (page - 1) * item;
-                staffs = this.staffRepository.getAllStaff(item, offset);
-            }
-        }
+    public StaffsResponse getAllStaff(StaffSearch staffSearch) {
+        staffSearch.setOffset((staffSearch.getPage() - 1) * staffSearch.getItemByPage());
+        StaffEntity staffEntity = new StaffEntity();
+        staffEntity.setId(staffSearch.getId());
+        staffEntity.setName(staffSearch.getName());
+        List<StaffEntity> staffs = this.staffRepository.getAllStaff(staffSearch);
         Mapper mapper = new Mapper(staffs);
         StaffsResponse response = new StaffsResponse();
+        response.setItemCount(this.staffRepository.searchStaff(staffEntity));
         response.setStaffs(mapper.map());
         return response;
     }
@@ -64,9 +59,11 @@ public class StaffService {
      * @param id the id of the staff.
      * @return staff's information.
      */
+
     public StaffResponse getStaffDetailsById(int id) {
         if (!staffRepository.isIdExist(id)) {
-            throw new BadRequestException(new ApiError("id_not_found", "id_not_found"));
+            throw new BadRequestException(new ApiError(ID_NOT_EXISTS,
+                    messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH)));
         }
         StaffEntity staffEntity = this.staffRepository.getStaffDetailsById(id);
         StaffResponse staffResponse = new StaffResponse();
@@ -87,7 +84,8 @@ public class StaffService {
      */
     public void updateStaffById(StaffRequest staffRegisterRequest) {
         if (!staffRepository.isIdExist(staffRegisterRequest.getId())) {
-            throw new BadRequestException(new ApiError("id_not_found", "ID not found."));
+            throw new BadRequestException(new ApiError(ID_NOT_EXISTS,
+                    messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH)));
         }
         StaffEntity staffEntity = new StaffEntity();
         staffEntity.setId(staffRegisterRequest.getId());
@@ -105,7 +103,8 @@ public class StaffService {
      */
     public void deleteStaff(int id) {
         if (!staffRepository.isIdExist(id)) {
-            throw new BadRequestException(new ApiError("id_not_found", "ID not found."));
+            throw new BadRequestException(new ApiError(ID_NOT_EXISTS,
+                    messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH)));
         }
         this.staffRepository.deleteStaff(id);
     }
@@ -113,36 +112,19 @@ public class StaffService {
     /**
      * Create/ insert new staff.
      * 
-     * @param staffRegisterRequest information of staff
+     * @param staffRequest information of staff
      */
-    public void insertNewStaff(StaffRequest staffRegisterRequest) {
-        if (staffRepository.isIdExist(staffRegisterRequest.getId())) {
-            throw new BadRequestException(new ApiError("id_already_exists", "ID already exists."));
+    public void insertNewStaff(StaffRequest staffRequest) {
+        if (staffRepository.isIdExist(staffRequest.getId())) {
+            throw new BadRequestException(new ApiError(ID_EXISTS,
+                    messageSource.getMessage(ID_ALREADY_EXIST, null, Locale.ENGLISH)));
         }
         StaffEntity entity = new StaffEntity();
-        entity.setId(staffRegisterRequest.getId());
-        entity.setName((staffRegisterRequest.getName()));
-        entity.setAddress(staffRegisterRequest.getAddress());
-        entity.setPhoneNumber(staffRegisterRequest.getPhoneNumber());
-        entity.setDateOfBirth(staffRegisterRequest.getDateOfBirth());
+        entity.setId(staffRequest.getId());
+        entity.setName((staffRequest.getName()));
+        entity.setAddress(staffRequest.getAddress());
+        entity.setPhoneNumber(staffRequest.getPhoneNumber());
+        entity.setDateOfBirth(staffRequest.getDateOfBirth());
         this.staffRepository.insertNewStaff(entity);
     }
-
-    /**
-     * Search staff by id and name.
-     * 
-     * @param searchRequest id and name of staff
-     * @return the staffs list coincide with input
-     */
-    public StaffsResponse searchStaff(StaffSearchRequest searchRequest) {
-        StaffEntity staffEntity = new StaffEntity();
-        staffEntity.setId(searchRequest.getId());
-        staffEntity.setName(searchRequest.getName());
-        List<StaffEntity> staffList = this.staffRepository.searchStaff(staffEntity);
-        Mapper mapper = new Mapper(staffList);
-        StaffsResponse response = new StaffsResponse();
-        response.setStaffs(mapper.map());
-        return response;
-    }
-
 }
