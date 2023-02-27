@@ -77,6 +77,10 @@
     select id, username, password, role from account where username = #{username}
     </select>
 
+    <select id="selectByUserName" parameterType="com.demo.api.entities.UserInfo" resultMap="accountResult">
+    select id, username, password, role from account where username = #{username}
+    </select>
+
     <resultMap id = "accountResult" type = "com.demo.api.entities.UserInfo">
         <result property = "id" column = "id"/>
         <result property = "username" column = "username"/>

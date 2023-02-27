@@ -1,6 +1,7 @@
 package com.demo.api.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -94,7 +95,10 @@ public class StaffRepository {
         return this.staffMapper.searchStaff(entity);
     }
 
-    public UserInfo getByUserName(String username){
+    public Optional<UserInfo> getByUsername(String username){
         return this.staffMapper.selectByUsername(username);
+    }
+    public UserInfo getByUserName(String username){
+        return this.staffMapper.selectByUserName(username);
     }
 }

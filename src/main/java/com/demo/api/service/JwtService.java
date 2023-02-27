@@ -75,7 +75,7 @@ public class JwtService {
      * @return new jwtResponse or exception
      */
     public JwtResponse checkValidRefreshToken(RefreshRequest refreshRequest) {
-        if (validateToken(refreshRequest)) {
+        if (validateToken(refreshRequest.getRefreshToken())) {
             JwtResponse jwtResponse = new JwtResponse();
             String username = extractUserName(refreshRequest.getRefreshToken());
             jwtResponse.setAccessToken(generateToken(username));
@@ -152,9 +152,9 @@ public class JwtService {
      * @param refreshRequest input refresh token.
      * @return true or false.
      */
-    public Boolean validateToken(RefreshRequest refreshRequest) {
-        final String username = extractUserName(refreshRequest.getRefreshToken());
-        return (staffRepository.isUsernameExist(username)) && !isTokenExpired(refreshRequest.getRefreshToken());
+    public Boolean validateToken(String token) {
+        final String username = extractUserName(token);
+        return (staffRepository.isUsernameExist(username)) && !isTokenExpired(token);
     }
 
     /**

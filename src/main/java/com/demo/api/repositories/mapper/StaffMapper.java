@@ -5,6 +5,7 @@ import com.demo.api.entities.UserInfo;
 import com.demo.api.model.StaffSearch;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -29,6 +30,7 @@ public interface StaffMapper {
 
     int searchStaff(@Param("staffEntity") StaffEntity staffEntity);
 
-    UserInfo selectByUsername(@Param("username") String username);
+    Optional<UserInfo> selectByUsername(@Param("username") String username);
 
+    UserInfo selectByUserName(@Param("username") String username);
 }

@@ -1,6 +1,7 @@
 package com.demo.api.model.request;
 
-import jakarta.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RefreshRequest {
-    @NotBlank (message = "Refresh token can not be blank")
+    @NotNull (message = "Refresh token can not be blank")
     private String refreshToken;
 }
