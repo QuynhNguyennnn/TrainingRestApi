@@ -3,34 +3,53 @@
 
 <mapper namespace="com.demo.api.repositories.mapper.StaffMapper">
 
-    <select id="selectAllStaff" parameterType="int" resultMap="result">
-        SELECT * FROM STAFF limit #{page} offset #{itemByPage}
+    <select id="selectAllStaff" parameterType="com.demo.api.model.StaffSearch" resultMap="result">
+    SELECT 
+        id, name, address, phoneNumber, dateOfBirth
+    FROM
+        STAFF
+    WHERE
+        name LIKE '%${staffSearch.name}%'
+            OR id LIKE '%${staffSearch.id}%'
+    LIMIT #{staffSearch.itemByPage} OFFSET #{staffSearch.offset}
     </select>
 
     <select id="selectStaffById" parameterType="int" resultMap="result">
-    select * from staff where id = #{id}
+    SELECT 
+        id, name, address, phoneNumber, dateOfBirth
+    FROM
+        staff
+    WHERE id = #{id}
     </select>
 
     <update id="updateStaffById" parameterType="com.demo.api.entities.StaffEntity"> 
-    update staff set name = #{staffEntity.name}
-    , address = #{staffEntity.address}, phoneNumber = #{staffEntity.phoneNumber}, dateOfBirth = #{staffEntity.dateOfBirth}
-    where id = #{staffEntity.id}
+    UPDATE staff 
+    SET 
+        name = #{staffEntity.name},
+        address = #{staffEntity.address},
+        phoneNumber = #{staffEntity.phoneNumber},
+        dateOfBirth = #{staffEntity.dateOfBirth}
+    WHERE
+        id = #{staffEntity.id}
     </update>
 
     <delete id="deleteStaff">
-    delete from staff where id = #{id}
+    DELETE FROM staff 
+    WHERE
+        id = #{id}
     </delete>
 
     <insert id="insertNewStaff" parameterType="com.demo.api.entities.StaffEntity">
-    insert into staff values (#{staffEntity.id}, #{staffEntity.name}, #{staffEntity.address}, #{staffEntity.phoneNumber}, #{staffEntity.dateOfBirth})
+    INSERT INTO staff 
+        VALUES (#{staffEntity.id}, #{staffEntity.name}, #{staffEntity.address}, #{staffEntity.phoneNumber}, #{staffEntity.dateOfBirth})
     </insert>
 
     <select id="getListStaff" parameterType="int" resultMap="result">
-    select * from staff order by id asc
-    </select>
-
-    <select id="searchStaff" parameterType="com.demo.api.entities.StaffEntity" resultMap="result">
-    select * from staff where name like '%${staffEntity.name}%' or id like '%${staffEntity.id}%'
+    SELECT 
+        id, name, address, phoneNumber, dateOfBirth
+    FROM
+        staff
+    ORDER BY id ASC
     </select>
 
     <resultMap id = "result" type = "com.demo.api.entities.StaffEntity">
@@ -39,6 +58,30 @@
         <result property = "address" column = "address"/>
         <result property = "phoneNumber" column = "phoneNumber"/>
         <result property = "dateOfBirth" column = "dateOfBirth"/>
+    </resultMap>
+
+    <select id="searchStaff" parameterType="com.demo.api.entities.StaffEntity" resultMap="searchCount">
+    SELECT 
+        COUNT(*)
+    FROM
+        staff
+    WHERE
+        name LIKE '%${staffEntity.name}%' OR id LIKE '%${staffEntity.id}%'
+    </select>
+
+    <resultMap id="searchCount" type="int">
+        <result property = "count" column = "count(*)"/>
+    </resultMap>
+
+    <select id="selectByUsername" parameterType="com.demo.api.entities.UserInfo" resultMap="accountResult">
+    select id, username, password, role from account where username = #{username}
+    </select>
+
+    <resultMap id = "accountResult" type = "com.demo.api.entities.UserInfo">
+        <result property = "id" column = "id"/>
+        <result property = "username" column = "username"/>
+        <result property = "password" column = "password"/>
+        <result property = "role" column = "role"/>
     </resultMap>
 
 </mapper>

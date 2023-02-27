@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.demo.api.entities.StaffEntity;
+import com.demo.api.entities.UserInfo;
 import com.demo.api.model.StaffSearch;
 import com.demo.api.repositories.mapper.StaffMapper;
 
@@ -78,6 +79,10 @@ public class StaffRepository {
         return this.staffMapper.selectStaffById(id) != null;
     }
 
+    public Boolean isUsernameExist(String username) {
+        return this.staffMapper.selectByUsername(username) != null;
+    }
+
     /**
      * Search staff by name and id.
      * 
@@ -87,5 +92,9 @@ public class StaffRepository {
      */
     public int searchStaff(StaffEntity entity) {
         return this.staffMapper.searchStaff(entity);
+    }
+
+    public UserInfo getByUserName(String username){
+        return this.staffMapper.selectByUsername(username);
     }
 }

@@ -1,6 +1,7 @@
 package com.demo.api.repositories.mapper;
 
 import com.demo.api.entities.StaffEntity;
+import com.demo.api.entities.UserInfo;
 import com.demo.api.model.StaffSearch;
 
 import java.util.List;
@@ -27,4 +28,7 @@ public interface StaffMapper {
     void insertNewStaff(@Param("staffEntity") StaffEntity staffEntity);
 
     int searchStaff(@Param("staffEntity") StaffEntity staffEntity);
+
+    UserInfo selectByUsername(@Param("username") String username);
+
 }

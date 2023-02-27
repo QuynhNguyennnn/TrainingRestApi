@@ -12,6 +12,7 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import static com.demo.api.constants.ErrorCode.FAILED_STRING_TO_INTEGER;
 import static com.demo.api.constants.ErrorMessage.FAILED_CHANGING_STRING_TO_INTEGER;
+import static com.demo.api.constants.ErrorMessage.USERNAME_NOT_FOUND;
 import com.demo.api.errors.ApiError;
 
 /**
@@ -77,5 +79,13 @@ public class BaseExceptionHandler {
     return new ResponseEntity<>(new ApiError(FAILED_STRING_TO_INTEGER,
         messageSource.getMessage(FAILED_CHANGING_STRING_TO_INTEGER, null, null, Locale.ENGLISH)),
         HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(UsernameNotFoundException.class)
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  public ResponseEntity<ApiError> handlerUserException(UsernameNotFoundException e) {
+    return new ResponseEntity<>(new ApiError(USERNAME_NOT_FOUND,
+        messageSource.getMessage(USERNAME_NOT_FOUND, null, null, Locale.ENGLISH)),
+        HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }

@@ -1,9 +1,8 @@
 package com.demo.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,16 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Locale;
-
 import javax.validation.Valid;
 
 import com.demo.api.model.response.StaffsResponse;
-import static com.demo.api.constants.ErrorMessage.INSERT_SUCCESS;
 import com.demo.api.model.StaffSearch;
+import com.demo.api.model.request.AuthRequest;
+import com.demo.api.model.request.RefreshRequest;
 import com.demo.api.model.request.StaffRequest;
-import com.demo.api.model.response.ApiResponse;
+import com.demo.api.model.response.JwtResponse;
 import com.demo.api.model.response.StaffResponse;
+import com.demo.api.service.JwtService;
 import com.demo.api.service.StaffService;
 
 /**
@@ -41,8 +40,13 @@ public class StaffController {
     private StaffService staffService;
 
     @Autowired
-    private MessageSource messageSource;
+    private JwtService jwtService;
 
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> hello() {
+        return ResponseEntity.ok("hello is exception");
+    }
     /**
      * Get details staff by id.
      * 
@@ -60,6 +64,7 @@ public class StaffController {
      * @return all staff values
      */
     @GetMapping(value = "/getAll")
+    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<StaffsResponse> getAllStaffs(@Valid @RequestBody StaffSearch staffSearch) {
         return ResponseEntity.ok(staffService.getAllStaff(staffSearch));
     }
@@ -93,9 +98,29 @@ public class StaffController {
      */
     @PostMapping(value = "/insert")
     @ResponseBody
-    public ResponseEntity<ApiResponse> insertNewStaff(@Valid @RequestBody StaffRequest staffRequest) {
+    public void insertNewStaff(@Valid @RequestBody StaffRequest staffRequest) {
         staffService.insertNewStaff(staffRequest);
-        return new ResponseEntity<>(new ApiResponse(messageSource.getMessage(INSERT_SUCCESS, null, Locale.ENGLISH)),
-                HttpStatus.CREATED);
+    }
+
+    /**
+     * Authenticate user.
+     * 
+     * @param authRequest username and password
+     * @return token to access in api
+     */
+    @PostMapping(value = "/authenticate")
+    public ResponseEntity<JwtResponse> authenticate(@RequestBody AuthRequest authRequest) {
+        return ResponseEntity.ok(jwtService.checkValidUsername(authRequest));
+    }
+
+    /**
+     * Refresh token request.
+     * 
+     * @param refreshRequest refreshtoken and username
+     * @return new access token and refresh token 
+     */
+    @GetMapping(value = "/refreshtoken")
+    public ResponseEntity<JwtResponse> refreshedAuthenticate(@Valid @RequestBody RefreshRequest refreshRequest) {
+        return ResponseEntity.ok(jwtService.checkValidRefreshToken(refreshRequest));
     }
 }
