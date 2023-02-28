@@ -27,7 +27,8 @@ public class Mapper {
     public List<StaffResponse> map() {
         return entity.stream()
                 .map(i -> new StaffResponse(i.getId(), i.getName(),
-                        i.getAddress(), i.getPhoneNumber(), i.getDateOfBirth()))
+                        i.getAddress(), i.getPhoneNumber(), i.getDateOfBirth(), i.getCreateUser(),
+                        i.getCreateDateTime(), i.getUpdateUser(), i.getUpdateDateTime()))
                 .collect(Collectors.toList());
     }
 }

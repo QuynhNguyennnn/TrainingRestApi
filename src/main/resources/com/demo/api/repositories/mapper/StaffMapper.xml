@@ -5,7 +5,7 @@
 
     <select id="selectAllStaff" parameterType="com.demo.api.model.StaffSearch" resultMap="result">
     SELECT 
-        id, name, address, phoneNumber, dateOfBirth
+        id, name, address, phone_number, date_of_birth, create_user, create_date_time, update_user, update_date_time
     FROM
         STAFF
     WHERE
@@ -16,7 +16,7 @@
 
     <select id="selectStaffById" parameterType="int" resultMap="result">
     SELECT 
-        id, name, address, phoneNumber, dateOfBirth
+        id, name, address, phone_number, date_of_birth, create_user, create_date_time, update_user, update_date_time
     FROM
         staff
     WHERE id = #{id}
@@ -27,26 +27,29 @@
     SET 
         name = #{staffEntity.name},
         address = #{staffEntity.address},
-        phoneNumber = #{staffEntity.phoneNumber},
-        dateOfBirth = #{staffEntity.dateOfBirth}
+        phone_number = #{staffEntity.phoneNumber},
+        date_of_birth = #{staffEntity.dateOfBirth}, update_user = #{staffEntity.id}, update_date_time = now()
     WHERE
         id = #{staffEntity.id}
     </update>
 
     <delete id="deleteStaff">
-    DELETE FROM staff 
-    WHERE
+    UPDATE staff 
+    SET 
+        delete_flag = 1, update_user = #{id}, update_date_time = now()
+    WHERE   
         id = #{id}
     </delete>
 
     <insert id="insertNewStaff" parameterType="com.demo.api.entities.StaffEntity">
     INSERT INTO staff 
-        VALUES (#{staffEntity.id}, #{staffEntity.name}, #{staffEntity.address}, #{staffEntity.phoneNumber}, #{staffEntity.dateOfBirth})
+        VALUES (#{staffEntity.id}, #{staffEntity.name}, #{staffEntity.address}, 
+        #{staffEntity.phoneNumber}, #{staffEntity.dateOfBirth}, #{staffEntity.id}, now(), null, null, default)
     </insert>
 
     <select id="getListStaff" parameterType="int" resultMap="result">
     SELECT 
-        id, name, address, phoneNumber, dateOfBirth
+        id, name, address, phone_number, date_of_birth, create_user, create_date_time, update_user, update_date_time
     FROM
         staff
     ORDER BY id ASC
@@ -56,8 +59,8 @@
         <result property = "id" column = "id"/>
         <result property = "name" column = "name"/>
         <result property = "address" column = "address"/>
-        <result property = "phoneNumber" column = "phoneNumber"/>
-        <result property = "dateOfBirth" column = "dateOfBirth"/>
+        <result property = "phoneNumber" column = "phone_number"/>
+        <result property = "dateOfBirth" column = "date_of_birth"/>
     </resultMap>
 
     <select id="searchStaff" parameterType="com.demo.api.entities.StaffEntity" resultMap="searchCount">

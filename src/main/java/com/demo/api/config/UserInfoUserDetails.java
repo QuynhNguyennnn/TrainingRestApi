@@ -9,10 +9,16 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import static com.demo.api.constants.CommonConstant.COMMA;
 import com.demo.api.entities.UserInfo;
 
 import lombok.Data;
 
+/**
+ * User Infor User Details.
+ * 
+ * @author QuynhNN
+ */
 @Data
 public class UserInfoUserDetails implements UserDetails {
     private String name;
@@ -22,7 +28,7 @@ public class UserInfoUserDetails implements UserDetails {
     public UserInfoUserDetails(UserInfo userInfo) {
         name = userInfo.getUsername();
         password = userInfo.getPassword();
-        authorities = Arrays.stream(userInfo.getRole().split(",")).map(SimpleGrantedAuthority::new)
+        authorities = Arrays.stream(userInfo.getRole().split(COMMA)).map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 

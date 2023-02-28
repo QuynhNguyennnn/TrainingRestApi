@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component;
 import com.demo.api.entities.UserInfo;
 import com.demo.api.repositories.StaffRepository;
 
+/**
+ * User Info User Details Service.
+ * 
+ * @author QuynhNN
+ */
 @Component
 public class UserInfoUserDetailsService implements UserDetailsService {
     @Autowired

@@ -3,10 +3,21 @@ package com.demo.api.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Http Exception Handle.
+ * 
+ * @author QuynhNN
+ */
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
 public class HttpExceptionHandle extends ApiException {
     
-    public HttpExceptionHandle(String code, String mess) {
-        super(code, mess, HttpStatus.BAD_REQUEST);
+    /**
+     * Constructor.
+     * 
+     * @param code code of error
+     * @param message message of error
+     */
+    public HttpExceptionHandle(String code, String message) {
+        super(code, message, HttpStatus.BAD_REQUEST);
     }
 }

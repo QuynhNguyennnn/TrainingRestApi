@@ -19,6 +19,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.demo.api.filter.JwtAuthFilter;
 
+/**
+ * Security Config.
+ * 
+ * @author QuynhNN
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity

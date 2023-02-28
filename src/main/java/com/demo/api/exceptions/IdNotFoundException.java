@@ -15,10 +15,10 @@ public class IdNotFoundException extends ApiException {
      * Constructor. 
      * 
      * @param code code of error
-     * @param mess message of error
+     * @param message message of error
      */
-    public IdNotFoundException(String code, String mess){
-        super(code, mess, HttpStatus.NOT_FOUND);
+    public IdNotFoundException(String code, String message){
+        super(code, message, HttpStatus.NOT_FOUND);
     }
 
     /**

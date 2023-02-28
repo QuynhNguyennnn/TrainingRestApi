@@ -2,6 +2,8 @@ package com.demo.api.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -27,6 +29,8 @@ import com.demo.api.repositories.StaffRepository;
  */
 @Service
 public class StaffService {
+
+    private static Logger logger = LoggerFactory.getLogger(StaffService.class);
 
     @Autowired
     private StaffRepository staffRepository;
@@ -62,6 +66,7 @@ public class StaffService {
 
     public StaffResponse getStaffDetailsById(int id) {
         if (!staffRepository.isIdExist(id)) {
+            logger.error(messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH));
             throw new BadRequestException(new ApiError(ID_NOT_EXISTS,
                     messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH)));
         }
@@ -84,6 +89,7 @@ public class StaffService {
      */
     public void updateStaffById(StaffRequest staffRegisterRequest) {
         if (!staffRepository.isIdExist(staffRegisterRequest.getId())) {
+            logger.error(messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH));
             throw new BadRequestException(new ApiError(ID_NOT_EXISTS,
                     messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH)));
         }
@@ -103,6 +109,7 @@ public class StaffService {
      */
     public void deleteStaff(int id) {
         if (!staffRepository.isIdExist(id)) {
+            logger.error(messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH));
             throw new BadRequestException(new ApiError(ID_NOT_EXISTS,
                     messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH)));
         }
@@ -116,6 +123,7 @@ public class StaffService {
      */
     public void insertNewStaff(StaffRequest staffRequest) {
         if (staffRepository.isIdExist(staffRequest.getId())) {
+            logger.error(messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH));
             throw new BadRequestException(new ApiError(ID_EXISTS,
                     messageSource.getMessage(ID_ALREADY_EXIST, null, Locale.ENGLISH)));
         }

@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Staff
+ * Staff.
  * 
  * @author QuynhNN
  */

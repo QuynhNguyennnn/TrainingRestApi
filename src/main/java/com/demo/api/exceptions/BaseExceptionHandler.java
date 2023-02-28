@@ -6,6 +6,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -24,7 +26,7 @@ import static com.demo.api.constants.ErrorMessage.USERNAME_NOT_FOUND;
 import com.demo.api.errors.ApiError;
 
 /**
- * Staff Controller Advice.
+ * Base Exeption Handler.
  * 
  * @author QuynhNN
  */
@@ -33,6 +35,8 @@ public class BaseExceptionHandler {
 
   @Autowired
   private MessageSource messageSource;
+
+  private static Logger logger = LoggerFactory.getLogger(BaseExceptionHandler.class);
 
   /**
    * Validate user input.
@@ -76,14 +80,22 @@ public class BaseExceptionHandler {
   @ExceptionHandler(HttpMessageNotReadableException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<ApiError> handlerHttpException(HttpMessageNotReadableException e) {
+    logger.error(messageSource.getMessage(FAILED_CHANGING_STRING_TO_INTEGER, null, Locale.ENGLISH));
     return new ResponseEntity<>(new ApiError(FAILED_STRING_TO_INTEGER,
         messageSource.getMessage(FAILED_CHANGING_STRING_TO_INTEGER, null, null, Locale.ENGLISH)),
         HttpStatus.BAD_REQUEST);
   }
 
+  /**
+   * Handler username not found when authenticate.
+   * 
+   * @param e name of exception.
+   * @return error message.
+   */
   @ExceptionHandler(UsernameNotFoundException.class)
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ResponseEntity<ApiError> handlerUserException(UsernameNotFoundException e) {
+    logger.error(messageSource.getMessage(USERNAME_NOT_FOUND, null, Locale.ENGLISH));
     return new ResponseEntity<>(new ApiError(USERNAME_NOT_FOUND,
         messageSource.getMessage(USERNAME_NOT_FOUND, null, null, Locale.ENGLISH)),
         HttpStatus.INTERNAL_SERVER_ERROR);

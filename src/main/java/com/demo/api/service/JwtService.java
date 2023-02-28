@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -47,6 +49,8 @@ public class JwtService {
     @Autowired
     private AuthenticationProperty authenticationProperty;
 
+    private static Logger logger = LoggerFactory.getLogger(JwtService.class);
+
     /**
      * Check username is valid or not.
      * 
@@ -63,6 +67,7 @@ public class JwtService {
                 return jwtResponse;
             }
         } else {
+            logger.error(messageSource.getMessage(USERNAME_NOT_FOUND, null, Locale.ENGLISH));
             throw new UsernameNotFoundException(messageSource.getMessage(USERNAME_NOT_FOUND, null, Locale.ENGLISH));
         }
         return null;
@@ -82,6 +87,7 @@ public class JwtService {
             jwtResponse.setRefreshToken(generateRefreshToken(username));
             return jwtResponse;
         } else {
+            logger.error(messageSource.getMessage(INVALID_CREDENTIALS, null, Locale.ENGLISH));
             throw new BadRequestException(new ApiError(INVALID_CREDENTIAL,
                     messageSource.getMessage(INVALID_CREDENTIALS, null, Locale.ENGLISH)));
         }
