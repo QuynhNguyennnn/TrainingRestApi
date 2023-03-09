@@ -16,6 +16,7 @@ import static com.demo.api.constants.ErrorMessage.ID_ALREADY_EXIST;
 import com.demo.api.entities.StaffEntity;
 import com.demo.api.errors.ApiError;
 import com.demo.api.exceptions.BadRequestException;
+import com.demo.api.exceptions.ConflictException;
 import com.demo.api.model.StaffSearch;
 import com.demo.api.model.request.StaffRequest;
 import com.demo.api.model.response.StaffResponse;
@@ -37,7 +38,7 @@ public class StaffService {
 
     @Autowired
     private MessageSource messageSource;
-
+    
     /**
      * Get staff list by page number.
      * 
@@ -123,8 +124,8 @@ public class StaffService {
      */
     public void insertNewStaff(StaffRequest staffRequest) {
         if (staffRepository.isIdExist(staffRequest.getId())) {
-            logger.error(messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH));
-            throw new BadRequestException(new ApiError(ID_EXISTS,
+            logger.error(messageSource.getMessage(ID_ALREADY_EXIST, null, Locale.ENGLISH));
+            throw new ConflictException(new ApiError(ID_EXISTS,
                     messageSource.getMessage(ID_ALREADY_EXIST, null, Locale.ENGLISH)));
         }
         StaffEntity entity = new StaffEntity();

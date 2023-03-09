@@ -1,6 +1,8 @@
 package com.demo.api.model.response;
 
 
+import org.springframework.stereotype.Component;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Component
 public class StaffResponse {
     private int id;
     private String name;

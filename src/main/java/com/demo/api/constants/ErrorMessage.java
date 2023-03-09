@@ -12,4 +12,5 @@ public class ErrorMessage {
     public static final String INSERT_SUCCESS = "api.response.staff.creation.successful";
     public static final String USERNAME_NOT_FOUND = "api.error.username.not.found";
     public static final String INVALID_CREDENTIALS = "api.error.invalid.credentials.code";
+    public static final String PASSWORD_NOT_CORRECT = "api.error.password.not.correct";
 }

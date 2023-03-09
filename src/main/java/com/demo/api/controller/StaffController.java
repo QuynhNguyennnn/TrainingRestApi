@@ -2,7 +2,6 @@ package com.demo.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,11 +41,6 @@ public class StaffController {
     @Autowired
     private JwtService jwtService;
 
-
-    @GetMapping("/hello")
-    public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("hello is exception");
-    }
     /**
      * Get details staff by id.
      * 
@@ -64,7 +58,6 @@ public class StaffController {
      * @return all staff values
      */
     @GetMapping(value = "/getAll")
-    @PreAuthorize("hasAuthority('admin')")
     public ResponseEntity<StaffsResponse> getAllStaffs(@Valid @RequestBody StaffSearch staffSearch) {
         return ResponseEntity.ok(staffService.getAllStaff(staffSearch));
     }

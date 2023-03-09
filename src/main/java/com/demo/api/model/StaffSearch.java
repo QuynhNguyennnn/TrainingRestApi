@@ -2,6 +2,8 @@ package com.demo.api.model;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.stereotype.Component;
+
 import com.demo.api.validators.IntegerConstraint;
 
 import lombok.Data;
@@ -14,6 +16,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
+@Component
 public class StaffSearch {
 
     @IntegerConstraint

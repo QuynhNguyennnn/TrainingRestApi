@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 import static com.demo.api.constants.ErrorMessage.USERNAME_NOT_FOUND;
 import static com.demo.api.constants.ErrorMessage.INVALID_CREDENTIALS;
 import static com.demo.api.constants.ErrorCode.INVALID_CREDENTIAL;
+import static com.demo.api.constants.ErrorCode.INCORRECT_PASSWORD;
+import static com.demo.api.constants.ErrorMessage.PASSWORD_NOT_CORRECT;
 import com.demo.api.entities.UserInfo;
 import com.demo.api.errors.ApiError;
 import com.demo.api.exceptions.BadRequestException;
@@ -65,18 +67,21 @@ public class JwtService {
                 jwtResponse.setAccessToken(generateToken(userInfo.getUsername()));
                 jwtResponse.setRefreshToken(generateRefreshToken(userInfo.getUsername()));
                 return jwtResponse;
+            } else {
+                logger.error(messageSource.getMessage(PASSWORD_NOT_CORRECT, null, Locale.ENGLISH));
+                throw new BadRequestException(new ApiError(INCORRECT_PASSWORD,
+                        messageSource.getMessage(PASSWORD_NOT_CORRECT, null, Locale.ENGLISH)));
             }
         } else {
             logger.error(messageSource.getMessage(USERNAME_NOT_FOUND, null, Locale.ENGLISH));
             throw new UsernameNotFoundException(messageSource.getMessage(USERNAME_NOT_FOUND, null, Locale.ENGLISH));
         }
-        return null;
     }
 
     /**
      * Check an input refresh token is valid or not.
      * 
-     * @param refreshRequest the refreshToken 
+     * @param refreshRequest the refreshToken
      * @return new jwtResponse or exception
      */
     public JwtResponse checkValidRefreshToken(RefreshRequest refreshRequest) {
@@ -117,8 +122,8 @@ public class JwtService {
     /**
      * Exctract all claim in token.
      * 
-     * @param <T> 
-     * @param token the token.
+     * @param <T>
+     * @param token          the token.
      * @param claimsResolver a function to reslove the claim.
      * @return all claim applied.
      */
@@ -176,6 +181,7 @@ public class JwtService {
 
     /**
      * Generate refresh token.
+     * 
      * @param userName input username.
      * @return refresh token generated.
      */
@@ -187,7 +193,7 @@ public class JwtService {
     /**
      * Create token function.
      * 
-     * @param claims notification.
+     * @param claims   notification.
      * @param userName username.
      * @return jwts token generated.
      */
@@ -203,7 +209,7 @@ public class JwtService {
     /**
      * Create refresh token function.
      * 
-     * @param claims notification.
+     * @param claims   notification.
      * @param userName username.
      * @return jwts refresh token generated.
      */

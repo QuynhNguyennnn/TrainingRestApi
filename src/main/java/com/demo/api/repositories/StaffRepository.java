@@ -95,9 +95,22 @@ public class StaffRepository {
         return this.staffMapper.searchStaff(entity);
     }
 
+    /**
+     * Get user info by username
+     * 
+     * @param username
+     * @return user info
+     */
     public Optional<UserInfo> getByUsername(String username){
         return this.staffMapper.selectByUsername(username);
     }
+
+    /**
+     * Get user info by username
+     * 
+     * @param username
+     * @return user info
+     */
     public UserInfo getByUserName(String username){
         return this.staffMapper.selectByUserName(username);
     }
