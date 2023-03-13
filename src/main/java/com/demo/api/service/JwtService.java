@@ -91,7 +91,8 @@ public class JwtService {
             jwtResponse.setAccessToken(generateToken(username));
             jwtResponse.setRefreshToken(generateRefreshToken(username));
             return jwtResponse;
-        } else {
+        }
+         else {
             logger.error(messageSource.getMessage(INVALID_CREDENTIALS, null, Locale.ENGLISH));
             throw new BadRequestException(new ApiError(INVALID_CREDENTIAL,
                     messageSource.getMessage(INVALID_CREDENTIALS, null, Locale.ENGLISH)));

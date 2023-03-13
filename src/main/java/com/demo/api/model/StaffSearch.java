@@ -4,8 +4,6 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.stereotype.Component;
 
-import com.demo.api.validators.IntegerConstraint;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -19,17 +17,14 @@ import lombok.NoArgsConstructor;
 @Component
 public class StaffSearch {
 
-    @IntegerConstraint
     private Integer id;
 
     private String name;
 
     @NotNull(message = "Page number is required")
-    @IntegerConstraint
     private Integer page;
 
     @NotNull(message = "Item by page is required")
-    @IntegerConstraint
     private Integer itemByPage;
 
     private int offset;

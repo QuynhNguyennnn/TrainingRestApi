@@ -3,6 +3,8 @@ package com.demo.api.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.demo.api.errors.ApiError;
+
 /**
  * Id Not Found Exception.
  * 
@@ -14,19 +16,9 @@ public class IdNotFoundException extends ApiException {
     /**
      * Constructor. 
      * 
-     * @param code code of error
-     * @param message message of error
+     * @param apiError
      */
-    public IdNotFoundException(String code, String message){
-        super(code, message, HttpStatus.NOT_FOUND);
+    public IdNotFoundException(ApiError apiError){
+        super(apiError, HttpStatus.NOT_FOUND);
     }
-
-    /**
-     * Another constructor no parameters.
-     * 
-     */
-    public IdNotFoundException() {
-        super("id_not_found", "Couldn't find id!", HttpStatus.NOT_FOUND);
-    }
-
 }

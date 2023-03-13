@@ -15,8 +15,8 @@ import static com.demo.api.constants.ErrorMessage.ID_NOT_FOUND;
 import static com.demo.api.constants.ErrorMessage.ID_ALREADY_EXIST;
 import com.demo.api.entities.StaffEntity;
 import com.demo.api.errors.ApiError;
-import com.demo.api.exceptions.BadRequestException;
 import com.demo.api.exceptions.ConflictException;
+import com.demo.api.exceptions.IdNotFoundException;
 import com.demo.api.model.StaffSearch;
 import com.demo.api.model.request.StaffRequest;
 import com.demo.api.model.response.StaffResponse;
@@ -68,7 +68,7 @@ public class StaffService {
     public StaffResponse getStaffDetailsById(int id) {
         if (!staffRepository.isIdExist(id)) {
             logger.error(messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH));
-            throw new BadRequestException(new ApiError(ID_NOT_EXISTS,
+            throw new IdNotFoundException(new ApiError(ID_NOT_EXISTS,
                     messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH)));
         }
         StaffEntity staffEntity = this.staffRepository.getStaffDetailsById(id);
@@ -91,7 +91,7 @@ public class StaffService {
     public void updateStaffById(StaffRequest staffRegisterRequest) {
         if (!staffRepository.isIdExist(staffRegisterRequest.getId())) {
             logger.error(messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH));
-            throw new BadRequestException(new ApiError(ID_NOT_EXISTS,
+            throw new IdNotFoundException(new ApiError(ID_NOT_EXISTS,
                     messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH)));
         }
         StaffEntity staffEntity = new StaffEntity();
@@ -111,7 +111,7 @@ public class StaffService {
     public void deleteStaff(int id) {
         if (!staffRepository.isIdExist(id)) {
             logger.error(messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH));
-            throw new BadRequestException(new ApiError(ID_NOT_EXISTS,
+            throw new IdNotFoundException(new ApiError(ID_NOT_EXISTS,
                     messageSource.getMessage(ID_NOT_FOUND, null, Locale.ENGLISH)));
         }
         this.staffRepository.deleteStaff(id);

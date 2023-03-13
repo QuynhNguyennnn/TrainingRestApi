@@ -80,6 +80,12 @@ public class StaffRepository {
         return this.staffMapper.selectStaffById(id) != null;
     }
 
+    /**
+     * Check that username is exists or not.
+     * 
+     * @param username
+     * @return
+     */
     public Boolean isUsernameExist(String username) {
         return this.staffMapper.selectByUsername(username) != null;
     }
