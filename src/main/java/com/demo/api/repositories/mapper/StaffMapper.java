@@ -1,4 +1,4 @@
-package com.demo.api.mapper;
+package com.demo.api.repositories.mapper;
 
 import com.demo.api.model.*;
 import java.util.*;
@@ -23,4 +23,5 @@ public interface StaffMapper {
 
     @Select("Update staff set name = #{name}, address = #{address}, phoneNum = #{phoneNum}, dateOfBirth = #{dateOfBirth} where id = #{id}")
     public int updateStaff(Staff staff);
+
 }
