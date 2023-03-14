@@ -1,0 +1,96 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.api.repositories.mapper.StaffMapper">
+
+    <select id="selectAllStaff" parameterType="com.demo.api.model.StaffSearch" resultMap="result">
+    SELECT 
+        id, name, address, phone_number, date_of_birth, create_user, create_date_time, update_user, update_date_time
+    FROM
+        STAFF
+    WHERE
+        name LIKE '%${staffSearch.name}%'
+            OR id LIKE '%${staffSearch.id}%'
+    LIMIT #{staffSearch.itemByPage} OFFSET #{staffSearch.offset}
+    </select>
+
+    <select id="selectStaffById" parameterType="int" resultMap="result">
+    SELECT 
+        id, name, address, phone_number, date_of_birth, create_user, create_date_time, update_user, update_date_time
+    FROM
+        staff
+    WHERE 
+        id = #{id} 
+        <!-- AND (delete_flag = 0) -->
+    </select>
+
+    <update id="updateStaffById" parameterType="com.demo.api.entities.StaffEntity"> 
+    UPDATE staff 
+    SET 
+        name = #{staffEntity.name},
+        address = #{staffEntity.address},
+        phone_number = #{staffEntity.phoneNumber},
+        date_of_birth = #{staffEntity.dateOfBirth}, update_user = #{staffEntity.id}, update_date_time = now()
+    WHERE
+        id = #{staffEntity.id}
+    </update>
+
+    <delete id="deleteStaff">
+    UPDATE staff 
+    SET 
+        delete_flag = 1, update_user = #{id}, update_date_time = now()
+    WHERE   
+        id = #{id}
+    </delete>
+
+    <insert id="insertNewStaff" parameterType="com.demo.api.entities.StaffEntity">
+    INSERT INTO staff 
+        VALUES (#{staffEntity.id}, #{staffEntity.name}, #{staffEntity.address}, 
+        #{staffEntity.phoneNumber}, #{staffEntity.dateOfBirth}, #{staffEntity.id}, now(), null, null, 0)
+    </insert>
+
+    <select id="getListStaff" parameterType="int" resultMap="result">
+    SELECT 
+        id, name, address, phone_number, date_of_birth, create_user, create_date_time, update_user, update_date_time
+    FROM
+        staff
+    ORDER BY id ASC
+    </select>
+
+    <resultMap id = "result" type = "com.demo.api.entities.StaffEntity">
+        <result property = "id" column = "id"/>
+        <result property = "name" column = "name"/>
+        <result property = "address" column = "address"/>
+        <result property = "phoneNumber" column = "phone_number"/>
+        <result property = "dateOfBirth" column = "date_of_birth"/>
+    </resultMap>
+
+    <select id="searchStaff" parameterType="com.demo.api.entities.StaffEntity" resultMap="searchCount">
+    SELECT 
+        COUNT(*)
+    FROM
+        staff
+    WHERE
+        name LIKE '%${staffEntity.name}%' OR id LIKE '%${staffEntity.id}%'
+    </select>
+
+    <resultMap id="searchCount" type="int">
+        <result property = "count" column = "count(*)"/>
+    </resultMap>
+
+    <select id="selectByUsername" parameterType="com.demo.api.entities.UserInfo" resultMap="accountResult">
+    select id, username, password, role from account where username = #{username}
+    </select>
+
+    <select id="selectByUserName" parameterType="com.demo.api.entities.UserInfo" resultMap="accountResult">
+    select id, username, password, role from account where username = #{username}
+    </select>
+
+    <resultMap id = "accountResult" type = "com.demo.api.entities.UserInfo">
+        <result property = "id" column = "id"/>
+        <result property = "username" column = "username"/>
+        <result property = "password" column = "password"/>
+        <result property = "role" column = "role"/>
+    </resultMap>
+
+</mapper>
