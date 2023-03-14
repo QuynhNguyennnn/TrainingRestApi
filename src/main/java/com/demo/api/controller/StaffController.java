@@ -103,8 +103,6 @@ public class StaffController {
      */
     @PostMapping(value = "/authenticate")
     public ResponseEntity<JwtResponse> authenticate(@RequestBody AuthRequest authRequest) {
-        // chỗ này để test merge branch
-        System.err.println("Authenticate.");
         return ResponseEntity.ok(jwtService.checkValidUsername(authRequest));
     }
 
