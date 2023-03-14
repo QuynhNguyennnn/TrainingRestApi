@@ -112,7 +112,8 @@ public class BaseExceptionHandler {
   @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
   public ResponseEntity<ApiError> handlerUserException(UsernameNotFoundException e) {
     logger.error(messageSource.getMessage(USERNAME_NOT_FOUND, null, Locale.ENGLISH));
-    System.out.println("Username is not found.");
+    System.out.println("Some message.");
+    logger.error(messageSource.getMessage(USERNAME_NOT_FOUND, null, Locale.ENGLISH));
     return new ResponseEntity<>(new ApiError(USERNAME_NOT_FOUND,
         messageSource.getMessage(USERNAME_NOT_FOUND, null, null, Locale.ENGLISH)),
         HttpStatus.INTERNAL_SERVER_ERROR);
