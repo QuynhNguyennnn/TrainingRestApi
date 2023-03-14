@@ -103,6 +103,7 @@ public class StaffController {
      */
     @PostMapping(value = "/authenticate")
     public ResponseEntity<JwtResponse> authenticate(@RequestBody AuthRequest authRequest) {
+        System.out.println("Authenticate");
         return ResponseEntity.ok(jwtService.checkValidUsername(authRequest));
     }
 
