@@ -7,7 +7,7 @@
     SELECT 
         id, name, address, phone_number, date_of_birth, create_user, create_date_time, update_user, update_date_time
     FROM
-        STAFF
+        staff
     WHERE
         name LIKE '%${staffSearch.name}%'
             OR id LIKE '%${staffSearch.id}%'

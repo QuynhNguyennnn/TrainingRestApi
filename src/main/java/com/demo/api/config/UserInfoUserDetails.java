@@ -21,6 +21,7 @@ import lombok.Data;
  */
 @Data
 public class UserInfoUserDetails implements UserDetails {
+    
     private String name;
     private String password;
     private List<GrantedAuthority> authorities;
